@@ -1,4 +1,3 @@
---dm_All_Currently_Running_Queries
 --Taken from SQL Server DMVs (Manning Book) & adapted by James
 --This shows all queries currently running, with current state, running time, cpu time & what it waiting on (if at all)
 --This includes queries Running, in the Runnable Queue or in the Wait Queue

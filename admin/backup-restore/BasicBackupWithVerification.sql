@@ -10,3 +10,31 @@ GO
 RESTORE VERIFYONLY
 	FROM DISK = '\\uncpath\DB1.bak' --Change this Path
 GO
+
+--------------------------------------
+-- Create scripts for all Databases --
+--------------------------------------
+
+EXEC sp_MSforeachdb N'
+IF ''?'' NOT IN (''tempdb'',''model'')
+DECLARE @DB nvarchar(128), @Today varchar(10)
+SET @DB = UPPER(''?'')
+SET @Today = CAST(CAST(SYSDATETIME() AS date) AS VARCHAR)
+PRINT
+''BACKUP DATABASE [?] TO DISK = ''''\\pmgbackupstore\PMGBACKUPS\PMGSQL\Backups_Daily\ACCOUNTS\'' + @DB + ''\?_'' + @Today + ''.bak''''
+	WITH COPY_ONLY, COMPRESSION, CHECKSUM;
+GO
+RESTORE VERIFYONLY
+	FROM DISK = ''''\\pmgbackupstore\PMGBACKUPS\PMGSQL\Backups_Daily\ACCOUNTS\'' + @DB + ''\?_'' + @Today + ''.bak''''
+GO'''
+
+
+EXEC sp_MSforeachdb N'
+IF ''?'' NOT IN (''tempdb'',''model'')
+PRINT
+''BACKUP DATABASE [?] TO DISK = ''''\\pmgbackupstore\PMGBACKUPS\PMGSQL\Backups_Daily\SQLFEEDS\?_'' + CAST(CAST(SYSDATETIME() AS date) AS VARCHAR) + ''.bak''''
+	WITH COPY_ONLY, COMPRESSION, CHECKSUM;
+GO
+RESTORE VERIFYONLY
+	FROM DISK = ''''\\pmgbackupstore\PMGBACKUPS\PMGSQL\Backups_Daily\SQLFEEDS\?_'' + CAST(CAST(SYSDATETIME() AS date) AS VARCHAR) + ''.bak''''
+GO'''

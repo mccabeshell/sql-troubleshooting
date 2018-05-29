@@ -22,7 +22,7 @@ FROM sys.dm_exec_requests AS er
 	   AND es.session_id > 50
 	   --AND er.status IN ('running','runnable')
 	   --AND es.[host_name] = 'VMWIN10-JAMES'
-	   --AND DB_NAME(database_id) IN ('Security','News')
+	   --AND DB_NAME(database_id) IN ('DB1','DB2')
 --ORDER BY es.session_id --session_id less than 50 is a system session
 ORDER BY session_id, status, cpu_time DESC
 
